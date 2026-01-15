@@ -93,7 +93,7 @@ def collect_news() -> List[Dict[str, Any]]:
     # 2. Google News
     logger.info("\n🔍 [2/3] Collecting from Google News...")
     try:
-        google_collector = GoogleNewsCollector(max_per_query=3)  # Limit for speed
+        google_collector = GoogleNewsCollector(max_per_query=20)  # Increased limit
         google_articles = google_collector.collect()
         
         new_count = 0
@@ -110,7 +110,7 @@ def collect_news() -> List[Dict[str, Any]]:
     # 3. Naver News
     logger.info("\n🇰🇷 [3/4] Collecting from Naver News...")
     try:
-        naver_collector = NaverNewsCollector(max_per_query=3)  # Limit for speed
+        naver_collector = NaverNewsCollector(max_per_query=20)  # Increased limit
         naver_articles = naver_collector.collect()
         
         new_count = 0
@@ -129,7 +129,7 @@ def collect_news() -> List[Dict[str, Any]]:
     # 4. GDELT (Crisis Events)
     logger.info("\n🌐 [4/4] Collecting from GDELT...")
     try:
-        gdelt_collector = GDELTCollector(goldstein_threshold=-4.0, max_events=30)
+        gdelt_collector = GDELTCollector(goldstein_threshold=-4.0, max_events=200)
         gdelt_articles = gdelt_collector.collect()
         
         new_count = 0

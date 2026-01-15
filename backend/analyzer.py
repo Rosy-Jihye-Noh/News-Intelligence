@@ -82,42 +82,65 @@ class GeminiAnalyzer:
         except Exception as e:
             logger.warning(f"⚠️ Failed to initialize Gemini: {e}")
     
-    def analyze_articles(self, articles: List[Dict[str, Any]], batch_size: int = 10) -> List[Dict[str, Any]]:
+    def analyze_articles(self, articles: List[Dict[str, Any]], batch_size: int = 20) -> List[Dict[str, Any]]:
         """
-        Analyze multiple articles.
+        Analyze multiple articles with parallel processing.
         
         Args:
             articles: List of article dictionaries
-            batch_size: Number of articles to analyze in each AI batch
+            batch_size: Number of articles to process in parallel
             
         Returns:
             List of analyzed article dictionaries
         """
         logger.info(f"{'='*60}")
-        logger.info(f"🤖 Starting AI Analysis")
+        logger.info(f"🤖 Starting AI Analysis (Parallel Processing)")
         logger.info(f"   Total articles: {len(articles)}")
         logger.info(f"{'='*60}")
         
-        analyzed = []
+        from concurrent.futures import ThreadPoolExecutor, as_completed
         
-        for idx, article in enumerate(articles, 1):
-            if idx % 50 == 0:
-                logger.info(f"   Analyzing... {idx}/{len(articles)}")
+        def analyze_batch(batch_articles, start_idx):
+            """Analyze a batch of articles"""
+            batch_results = []
+            for idx, article in enumerate(batch_articles):
+                try:
+                    analyzed_article = self._analyze_single(article)
+                    batch_results.append((start_idx + idx, analyzed_article))
+                except Exception as e:
+                    logger.debug(f"Analysis error for article {start_idx + idx}: {e}")
+                    # Keep original article with default values
+                    article['category'] = 'ETC'
+                    article['sentiment'] = 'neutral'
+                    article['is_crisis'] = False
+                    article['country_tags'] = []
+                    article['keywords'] = []
+                    batch_results.append((start_idx + idx, article))
+            return batch_results
+        
+        # Process articles in parallel batches
+        analyzed = [None] * len(articles)
+        total_processed = 0
+        
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            futures = []
+            for i in range(0, len(articles), batch_size):
+                batch = articles[i:i+batch_size]
+                future = executor.submit(analyze_batch, batch, i)
+                futures.append(future)
             
-            try:
-                analyzed_article = self._analyze_single(article)
-                analyzed.append(analyzed_article)
-                self.stats['total_analyzed'] += 1
-            except Exception as e:
-                logger.warning(f"   ⚠️ Analysis error for article {idx}: {e}")
-                # Keep original article with default values
-                article['category'] = 'ETC'
-                article['sentiment'] = 'neutral'
-                article['is_crisis'] = False
-                article['country_tags'] = []
-                article['keywords'] = []
-                analyzed.append(article)
-                self.stats['errors'] += 1
+            for future in as_completed(futures):
+                batch_results = future.result()
+                for idx, result in batch_results:
+                    analyzed[idx] = result
+                    self.stats['total_analyzed'] += 1
+                    total_processed += 1
+                    
+                    if total_processed % 50 == 0:
+                        logger.info(f"   Analyzing... {total_processed}/{len(articles)}")
+        
+        # Filter out None values (shouldn't happen, but safety check)
+        analyzed = [a for a in analyzed if a is not None]
         
         logger.info(f"{'='*60}")
         logger.info(f"✅ Analysis complete")
@@ -349,35 +372,25 @@ Categories:
         return self._generate_insights_with_rules(title, summary)
     
     def _generate_insights_with_ai(self, title: str, summary: str) -> Dict[str, str]:
-        """Generate insights using Gemini AI - specific to each article"""
-        prompt = f"""당신은 무역, 물류, SCM 전문 분석가입니다. 아래 뉴스 기사를 읽고, 이 **특정 기사**에 대한 구체적인 시사점을 분석해주세요.
+        """Generate insights using Gemini AI - comprehensive summary"""
+        prompt = f"""당신은 무역, 물류, SCM 전문 분석가입니다. 아래 뉴스 기사를 읽고 종합적인 시사점을 3줄로 요약해주세요.
 
 📰 기사 제목: {title}
 📝 기사 요약: {summary}
 
-분석 요청:
-이 기사가 무역/물류/SCM 담당자에게 주는 **구체적이고 실행 가능한** 시사점을 작성하세요.
-- 일반적인 조언이 아닌, **이 기사의 내용에 직접 연관된** 시사점이어야 합니다.
-- 기사에서 언급된 **특정 지역, 기업, 품목, 수치** 등을 활용하세요.
-- 각 시사점은 20~40자 내외의 한국어 한 문장으로 작성하세요.
+요청사항:
+- 무역, 물류, SCM 관점을 종합하여 이 기사가 주는 핵심 시사점을 3줄로 작성
+- 각 줄은 30~50자 내외의 한국어 문장
+- 구체적인 수치, 지역, 기업명, 영향 범위를 포함
+- 일반적인 조언이 아닌 이 기사에 특화된 내용
+- 틀에 맞추지 말고 자연스럽게 종합적으로 작성
 
 아래 JSON 형식으로만 응답 (마크다운, 설명 없이):
 {{
-    "trade": "무역 관점: 이 기사로 인한 수출입/관세/무역정책 영향",
-    "logistics": "물류 관점: 이 기사로 인한 운송/배송/창고 운영 영향",
-    "scm": "SCM 관점: 이 기사로 인한 재고/조달/공급망 전략 영향"
-}}
-
-예시 (참고용):
-- 기사: "홍해 후티 공격으로 MSC 선박 운항 중단" 
-  → trade: "아시아-유럽 운임 20% 이상 상승 대비 원가 재산정 필요"
-  → logistics: "수에즈 우회 시 14일 추가 소요, 선적 일정 조정 권장"
-  → scm: "유럽향 부품 안전재고 3주 이상으로 상향 검토"
-
-- 기사: "부산항 체선 2주째 지속"
-  → trade: "부산항 경유 수출 건 납기 지연 불가피, 고객사 사전 통보 필요"
-  → logistics: "광양항 또는 인천항 대체 선적 검토 권장"
-  → scm: "국내 출고분 선제 확보 및 재고 위치 재배치 고려"""
+    "insight1": "첫 번째 시사점 (무역/물류/SCM 종합)",
+    "insight2": "두 번째 시사점 (무역/물류/SCM 종합)",
+    "insight3": "세 번째 시사점 (무역/물류/SCM 종합)"
+}}"""
 
         try:
             response = self.model.generate_content(prompt)
@@ -391,10 +404,11 @@ Categories:
             result = json.loads(text)
             time.sleep(0.1)  # Rate limiting
             
+            # 기존 형식으로 변환 (하위 호환성)
             return {
-                'trade': result.get('trade', ''),
-                'logistics': result.get('logistics', ''),
-                'scm': result.get('scm', ''),
+                'trade': result.get('insight1', ''),
+                'logistics': result.get('insight2', ''),
+                'scm': result.get('insight3', ''),
             }
             
         except Exception as e:

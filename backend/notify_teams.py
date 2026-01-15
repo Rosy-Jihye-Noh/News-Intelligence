@@ -190,7 +190,7 @@ def send_teams_notification(webhook_url: str, stats: dict, news: dict) -> bool:
                         {
                             "type": "Action.OpenUrl",
                             "title": "📱 대시보드 열기",
-                            "url": os.getenv('DASHBOARD_URL', 'https://github.com')
+                            "url": "https://rosy-jihye-noh.github.io/News-Intelligence/"
                         }
                     ]
                 }

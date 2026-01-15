@@ -198,27 +198,49 @@ class DataManager:
                 'group_count': 1,  # Placeholder for similarity grouping
                 'insights': {}
             }
+            headlines.append(headline)
+        
+        # Generate insights in parallel batch if analyzer is available
+        if analyzer:
+            from concurrent.futures import ThreadPoolExecutor, as_completed
             
-            # Generate insights if analyzer is available
-            if analyzer:
+            logger.info("   🔍 Generating insights in parallel...")
+            
+            def generate_insights_for_article(headline_item, article_item):
                 try:
-                    headline['insights'] = analyzer.generate_insights(article)
+                    return analyzer.generate_insights(article_item)
                 except Exception as e:
                     logger.debug(f"Failed to generate insights: {e}")
-                    headline['insights'] = {
+                    return {
                         'trade': '관련 시장 동향 모니터링 필요',
                         'logistics': '물류 일정 및 비용 영향 검토 필요',
                         'scm': '공급망 리스크 관리 점검 권장'
                     }
-            else:
-                # Default insights
+            
+            with ThreadPoolExecutor(max_workers=3) as executor:
+                futures = {executor.submit(generate_insights_for_article, h, a): (i, h) 
+                          for i, (h, a) in enumerate(zip(headlines, top_articles))}
+                
+                for future in as_completed(futures):
+                    idx, headline_item = futures[future]
+                    try:
+                        insights = future.result()
+                        headlines[idx]['insights'] = insights
+                    except Exception as e:
+                        logger.debug(f"Insights generation error: {e}")
+                        headlines[idx]['insights'] = {
+                            'trade': '관련 시장 동향 모니터링 필요',
+                            'logistics': '물류 일정 및 비용 영향 검토 필요',
+                            'scm': '공급망 리스크 관리 점검 권장'
+                        }
+        else:
+            # Default insights if no analyzer
+            for headline in headlines:
                 headline['insights'] = {
                     'trade': '관련 시장 동향 모니터링 필요',
                     'logistics': '물류 일정 및 비용 영향 검토 필요',
                     'scm': '공급망 리스크 관리 점검 권장'
                 }
-            
-            headlines.append(headline)
         
         logger.info(f"   ✅ Generated {len(headlines)} headlines with insights")
         return headlines
@@ -280,12 +302,53 @@ class DataManager:
         return filepath
     
     def _generate_wordcloud_data(self, articles: List[Dict[str, Any]]) -> str:
-        """Generate wordcloud_data.json with keyword frequencies"""
+        """Generate wordcloud_data.json with keyword frequencies (filtered)"""
+        # 일반 단어 블랙리스트
+        STOP_WORDS = {
+            'freight', 'logistics', 'shipping', 'port', 'container', 'cargo', 
+            'trade', 'import', 'export', 'supply chain', 'supplychain',
+            '물류', '해운', '항만', '컨테이너', '수출', '수입', '무역', '화물', '운송', '공급망',
+            'news', 'article', 'report', 'update', 'breaking', 'said', 'according'
+        }
+        
         keyword_counts = Counter()
         
         for article in articles:
-            for keyword in article.get('keywords', []):
-                keyword_counts[keyword.lower()] += 1
+            # 키워드에서 일반 단어 제외
+            filtered_keywords = [
+                kw.lower() for kw in article.get('keywords', [])
+                if kw.lower() not in STOP_WORDS and len(kw) > 2
+            ]
+            
+            # 제목과 요약에서 구체적 키워드 추출 (앞뒤 단어 포함)
+            title = article.get('title', '')
+            summary = article.get('content_summary', '')
+            text = f"{title} {summary}"
+            
+            # 2-3단어 구문 추출 (bigram/trigram)
+            words = text.split()
+            for i in range(len(words) - 1):
+                # 2단어 구문
+                bigram = f"{words[i]} {words[i+1]}".lower().strip('.,!?;:()[]{}"\'-')
+                # 일반 단어가 포함되지 않은 경우만 추가
+                if (bigram not in STOP_WORDS and 
+                    len(bigram.split()) == 2 and 
+                    len(bigram) > 4 and
+                    not all(word in STOP_WORDS for word in bigram.split())):
+                    keyword_counts[bigram] += 1
+            
+            # 3단어 구문도 추출 (중요한 구문)
+            for i in range(len(words) - 2):
+                trigram = f"{words[i]} {words[i+1]} {words[i+2]}".lower().strip('.,!?;:()[]{}"\'-')
+                if (trigram not in STOP_WORDS and 
+                    len(trigram.split()) == 3 and
+                    len(trigram) > 6 and
+                    not all(word in STOP_WORDS for word in trigram.split())):
+                    keyword_counts[trigram] += 1
+            
+            # 기존 필터링된 키워드도 추가
+            for kw in filtered_keywords:
+                keyword_counts[kw] += 1
         
         # Format for wordcloud
         wordcloud_data = {
