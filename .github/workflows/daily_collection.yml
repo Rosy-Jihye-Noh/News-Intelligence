@@ -41,16 +41,22 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
+          
+          # 커밋 전에 항상 최신 상태로 업데이트
+          git pull --rebase origin main || echo "Pull failed or already up to date"
+          
           git add frontend/data/
           
           # 변경사항이 있을 때만 커밋
           if ! git diff --staged --quiet; then
             git commit -m "📊 Daily news update $(date +%Y-%m-%d)"
             
-            # 원격 변경사항 가져오기 및 푸시 (재시도 로직 포함)
-            for i in 1 2 3; do
-              git pull --rebase origin main && git push origin main && break || sleep 2
-            done
+            # 푸시 시도 (실패해도 워크플로우는 계속 진행)
+            git push origin main || {
+              echo "⚠️ Push failed, trying pull and push again..."
+              git pull --rebase origin main
+              git push origin main || echo "⚠️ Push failed, but continuing..."
+            }
           else
             echo "No changes to commit"
           fi
