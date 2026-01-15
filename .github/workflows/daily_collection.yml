@@ -42,8 +42,18 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add frontend/data/
-          git diff --staged --quiet || git commit -m "📊 Daily news update $(date +%Y-%m-%d)"
-          git push
+          
+          # 변경사항이 있을 때만 커밋
+          if ! git diff --staged --quiet; then
+            git commit -m "📊 Daily news update $(date +%Y-%m-%d)"
+            
+            # 원격 변경사항 가져오기 및 푸시 (재시도 로직 포함)
+            for i in 1 2 3; do
+              git pull --rebase origin main && git push origin main && break || sleep 2
+            done
+          else
+            echo "No changes to commit"
+          fi
       
       - name: Send Teams notification
         if: success()
