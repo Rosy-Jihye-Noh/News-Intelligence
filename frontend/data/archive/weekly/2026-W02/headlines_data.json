@@ -1,46 +1,34 @@
 {
   "headlines": [
     {
-      "id": "831bfc2da9d6",
-      "title": "HMM, ‘HD한국조선해양-아비커스 자율운항 솔루션’ 도입 MOU",
-      "content_summary": "HMM(대표이사 사장 최원혁)은 HD한국조선해양, 아비커스와 ‘AI 기반 자율운항 솔루션 도입 계약 및 기술협력 MOU’를 체결했다고 16일 밝혔다.지난 15일 판교 HD현대 글로벌R&D센터(GRC)에서 진행된 협약식에는 HMM 최원혁 대표를 비롯해 HD한국조선해양 김형관 대표, 아비커스의 강재호, 임도형 대표 등 관계자 30여 명이 참석했다.이번 협약에 따라 HMM은 이번 선박 40척에 아비커스의 자율운항 솔루션을 적용한다. 항해 보조 기능에 머무르고 있는 기존 시스템과 달리 스스로 최적의 항로를 설정해 항해함으로써 선박 운항 안",
-      "source_name": "물류신문",
-      "url": "https://www.klnews.co.kr/news/articleView.html?idxno=319692",
-      "published_at_utc": "2026-01-16T11:27:04Z",
-      "group_count": 8,
-      "insights": {
-        "trade": "",
-        "logistics": "",
-        "scm": ""
-      }
+      "id": "2efda0434514",
+      "title": "아비커스, HMM 선대에 자율운항 솔루션 공급",
+      "content_summary": "HD현대의 선박 자율 운항 전문 회사인 아비커스(Avikus)가 HMM으로부터 대규모 수주에 성공하며 자율 운항 사업 확대에 속도를 내고 있다.HD현대는 1월 15일 판교 글로벌R&D센터(GRC)에서 최원혁 HMM 대표, 김형관 HD한국조선해양 대표, 강재호·임도형 아비커스 대표가 참석한 가운데 대형 선박용 자율 운항 솔루션인 하이나스 컨트롤(HiNAS Control)의 공급계약을 체결했다고 밝혔다.이날 계약을 통해 아비커스는 HMM이 운용 중인 40척의 선박에 하이나스 컨트롤을 공급하게 됐다. 단일 공급계약으로는 역대 최대 규모로",
+      "source_name": "한국해운신문",
+      "url": "http://www.maritimepress.co.kr/news/articleView.html?idxno=329629",
+      "published_at_utc": "2026-01-16T14:46:16Z",
+      "group_count": 11,
+      "insights": {}
     },
     {
-      "id": "b53b3e617266",
-      "title": "에어프레미아, 연중 최대 할인 ‘프로미스’ 미주 노선 판매 개시",
-      "content_summary": "인천 출발 기준 왕복 총액운임(유류할증료 및 공항시설사용료 포함)은 이코노미 클래스 △로스앤젤레스(LA) 68만3400원 △뉴욕 68만1400원 △샌프란시스코 54만3400원 △호놀룰루 56만7000원 △워싱턴 D.C....",
+      "id": "f483d756234c",
+      "title": "노동부, 쿠팡 블랙리스트·불법파견 의혹도 근로감독",
+      "content_summary": "쿠팡의 물류전문 자회사 쿠팡CFS는 ‘PNG 리스트’라고 불리는 블랙리스트 문건을 활용해 노동자들의 재취업을 제한했다는 의혹을 받고 있다. 지난 2024년 2월 김준호씨의 내부고발 이후 노동부가 조사에 착수했지만, 약...",
       "source_name": "Naver News",
-      "url": "https://www.news2day.co.kr/article/20260115500158",
-      "published_at_utc": "2026-01-15T05:26:00Z",
-      "group_count": 8,
-      "insights": {
-        "trade": "",
-        "logistics": "",
-        "scm": ""
-      }
+      "url": "https://n.news.naver.com/mnews/article/032/0003422037?sid=102",
+      "published_at_utc": "2026-01-16T06:32:00Z",
+      "group_count": 9,
+      "insights": {}
     },
     {
-      "id": "d93afebf6d69",
-      "title": "현대차그룹, AI·로보틱스 권위자 밀란 코박 자문 선임",
-      "content_summary": "코박은 현대차그룹에 AI 및 엔지니어링 전략 자문을 제공하고, 제조·물류·서비스 등 산업 생태계에서 그룹... 로보틱스 분야를 선도할 독보적 경쟁 우위를 갖춘 만큼 혁신의 여정이 기대된다\"고 말했다. [뉴스인사이드 ]",
+      "id": "026632817b71",
+      "title": "에어프레미아, '프로미스' 미주노선 판매 개시",
+      "content_summary": "인천 출발기준 왕복 총액운임(유류할증료 및 공항시설사용료 포함)은 이코노미 클래스 ▲LA 68만3400원 ▲뉴욕 68만1400원 ▲샌프란시스코 54만3400원 ▲호놀룰루 56만7000원 ▲워싱턴 D.C. 127만6400원부터다. 보다...",
       "source_name": "Naver News",
-      "url": "https://www.newsinside.kr/news/articleView.html?idxno=4346176",
-      "published_at_utc": "2026-01-16T03:14:00Z",
-      "group_count": 7,
-      "insights": {
-        "trade": "",
-        "logistics": "",
-        "scm": ""
-      }
+      "url": "https://www.econovill.com/news/articleView.html?idxno=725867",
+      "published_at_utc": "2026-01-15T10:24:00Z",
+      "group_count": 8,
+      "insights": {}
     },
     {
       "id": "50fd4ef6bec1",
@@ -50,11 +38,7 @@
       "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNbktXSElFejdtd21oMFU1MDNQdHh3NmdaT243Z2JSQUdiY2R6d0ZTdkNFeFJvMWFWUlNYNFZWNnphSTRMbFBzR04xWGR4eldNbW5QOFVXVGN5S3UyRTNid2pyUWw4QS15Q2RQMHl1R0JwRWNoZXF3TWFfTm1OVmxrQ1NPdC1NV0UyLWNQcWJ6MV96NFB0QnFsVDJyRFF1STlGWF85OHhMbjY3ejR2Z3dwQ3ZtbDZCMHBLVVh6Qw?oc=5",
       "published_at_utc": "2026-01-14T15:36:34Z",
       "group_count": 5,
-      "insights": {
-        "trade": "",
-        "logistics": "",
-        "scm": ""
-      }
+      "insights": {}
     },
     {
       "id": "6d36193dc15b",
@@ -64,11 +48,7 @@
       "url": "https://news.google.com/rss/articles/CBMisAJBVV95cUxQTURmTUl1cEQybmxYWGZMak1yU2FYWDJ2SHRIbWtXbEhydGh3TGtiRDlCcGlOVlEtd01nck03Vnczck9jaF9xZE05SmJfbnFyS3BpMGJ1b1dVX3dhMzBqbHpPYzBZbWMtdTZ4cWUyajFwRkxvUGdQeEtZX2VWNTFtTlFidUh5a09Lbl90eEpobXV4VkhPVTVHVWJkdVlfX2hVcDRjei1KbTdQMWtsT1YxMHdmYXFPVlliVXlnZ192c0NGbmliWDhWLTFpQTZzeVJmdXQ2czZlVVZpWVVNdHNJWXJZUmFqTXB1YXo2eWJQVXpWVlppbUU5S1E0clR2QzFxMXNNX0stWEhWZE1aRGV5bXhSSGEzSXJLRjdSdlY3QWpzWEhDUUtfWG0yNGNRemZR?oc=5",
       "published_at_utc": "2026-01-15T13:20:52Z",
       "group_count": 4,
-      "insights": {
-        "trade": "",
-        "logistics": "",
-        "scm": ""
-      }
+      "insights": {}
     },
     {
       "id": "988d0a9c98b6",
@@ -78,13 +58,9 @@
       "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQNENfV3VjZDBQNmJ6SUNoZHVYTnMzQldZcUswSFdMeVZwRThVVzZLNVoxZlpOWHJSdG5aUzVWTVlrUTh3aDhPUVZBZFZhNWdlLUVCSDhEREpVVVhnTFo2bWNqQ1lDenpKTmVKcER5N1kyQ1pFSDdQdzVldFpCMDBqR2tLeXVGRHZmQ0RzOUFaSVR5VmRxY2J5RGJQVXRVOUZrckhFYl9NcFBJc0dR?oc=5",
       "published_at_utc": "2026-01-15T22:05:00Z",
       "group_count": 3,
-      "insights": {
-        "trade": "",
-        "logistics": "",
-        "scm": ""
-      }
+      "insights": {}
     }
   ],
   "total": 6,
-  "generated_at": "2026-01-16T03:33:39Z"
+  "generated_at": "2026-01-16T06:35:59Z"
 }
