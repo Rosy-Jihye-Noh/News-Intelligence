@@ -157,6 +157,59 @@ def collect_news() -> List[Dict[str, Any]]:
     return all_articles
 
 
+def filter_irrelevant_articles(articles: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Filter out irrelevant articles (weddings, real estate ads, passport rankings, etc.)
+    
+    Args:
+        articles: List of articles
+        
+    Returns:
+        Filtered list of articles
+    """
+    # Irrelevant keywords/patterns
+    IRRELEVANT_PATTERNS = [
+        # 결혼 관련
+        r'\[?화촉\]?', r'결혼', r'결혼식', r'wedding',
+        # 부동산 광고
+        r'견본주택', r'분양', r'입주', r'리버블시티', r'자이', r'아파트.*광고',
+        # 여권/비자 랭킹
+        r'여권.*순위', r'여권.*\d+위', r'비자.*면제', r'passport.*rank',
+        # 기타 광고/프로모션
+        r'\[.*광고.*\]', r'\[.*프로모션.*\]', r'\[.*이벤트.*\]',
+        # 자격시험/교육 일정 공고
+        r'자격시험.*일정', r'특례교육.*일정', r'시험.*공고', r'교육.*일정.*공고',
+        # 동정 기사 (인사/방문 등)
+        r'\[동정\]', r'동정\]', r'방문.*마치고.*귀국', r'출장.*귀국',
+        # 연예인/사건사고 (물류 무관)
+        r'전신.*화상', r'휠체어.*귀국', r'연예인.*사고',
+    ]
+    
+    import re
+    filtered = []
+    
+    for article in articles:
+        title = article.get('title', '').lower()
+        summary = article.get('content_summary', '').lower()
+        text = f"{title} {summary}"
+        
+        # Check if article contains irrelevant patterns
+        is_irrelevant = False
+        for pattern in IRRELEVANT_PATTERNS:
+            if re.search(pattern, text, re.IGNORECASE):
+                is_irrelevant = True
+                break
+        
+        if not is_irrelevant:
+            filtered.append(article)
+    
+    removed_count = len(articles) - len(filtered)
+    if removed_count > 0:
+        logger.info(f"   🗑️ Filtered {removed_count} irrelevant articles")
+    
+    return filtered
+
+
 def filter_recent_articles(articles: List[Dict[str, Any]], hours: int = 72) -> List[Dict[str, Any]]:
     """
     Filter articles to only include recent ones.
@@ -284,17 +337,20 @@ def main():
             logger.error("❌ No articles collected! Exiting.")
             sys.exit(1)
         
-        # Step 2: Filter recent articles
+        # Step 2: Filter irrelevant articles (weddings, real estate ads, etc.)
+        articles = filter_irrelevant_articles(articles)
+        
+        # Step 3: Filter recent articles
         articles = filter_recent_articles(articles, hours=72)
         
         if not articles:
             logger.error("❌ No recent articles found! Exiting.")
             sys.exit(1)
         
-        # Step 3: Analyze with AI
+        # Step 4: Analyze with AI
         articles, analyzer = analyze_articles(articles)
         
-        # Step 4: Generate output (pass analyzer for headline insights)
+        # Step 5: Generate output (pass analyzer for headline insights)
         files = generate_output(articles, start_time, analyzer=analyzer)
         
         # Done!

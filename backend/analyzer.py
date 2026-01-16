@@ -192,12 +192,15 @@ Respond with ONLY a JSON object (no markdown, no explanation):
 }}
 
 Categories:
-- Crisis: Strikes, accidents, conflicts, disasters
-- Ocean: Maritime shipping, containers, ports
+- Crisis: Strikes, accidents, conflicts, disasters (actual ongoing incidents)
+- Ocean: Maritime shipping, containers, ports, shipbuilding, marine research, KRISO
 - Air: Air cargo, airports, airlines
 - Inland: Trucking, rail, warehousing
 - Economy: Economic indicators, freight rates, trade
-- ETC: Other logistics news"""
+- ETC: Other logistics news
+
+IMPORTANT: Technology development, R&D success, system innovation news should NOT be classified as Crisis.
+For example, "AI-based damage control system development success" is Ocean, not Crisis."""
 
         try:
             response = self.model.generate_content(prompt)
@@ -256,15 +259,27 @@ Categories:
         """Rule-based category classification"""
         text_lower = text.lower()
         
-        # Crisis indicators
-        if any(kw in text_lower for kw in CRISIS_KEYWORDS):
-            return 'Crisis'
+        # Technology/Development keywords (not Crisis)
+        tech_positive_keywords = ['국산화', '성공', '개발', '기술', '시스템', 'development', 
+                                  'technology', 'innovation', 'research', '연구', '혁신']
+        has_tech_positive = any(kw in text_lower for kw in tech_positive_keywords)
         
-        # Ocean/Maritime
+        # Ocean/Maritime (check before Crisis to prioritize domain)
         ocean_keywords = ['ship', 'port', 'container', 'maritime', 'vessel', 'cargo ship',
-                         '선박', '항만', '컨테이너', '해운', '선사']
+                         '선박', '항만', '컨테이너', '해운', '선사', 'kriso', '해양', 
+                         '손상통제', '조선', '해사', '해수부']
         if any(kw in text_lower for kw in ocean_keywords):
+            # If it's a tech/development news in ocean domain, it's Ocean, not Crisis
+            if has_tech_positive:
+                return 'Ocean'
+            # Check if it's actually a crisis in ocean domain
+            if any(kw in text_lower for kw in CRISIS_KEYWORDS):
+                return 'Crisis'
             return 'Ocean'
+        
+        # Crisis indicators (only if not tech/development news)
+        if not has_tech_positive and any(kw in text_lower for kw in CRISIS_KEYWORDS):
+            return 'Crisis'
         
         # Air
         air_keywords = ['air cargo', 'airport', 'airline', 'flight', 'aviation',
@@ -347,7 +362,7 @@ Categories:
         text_lower = text.lower()
         found = [kw for kw in keywords_to_check if kw in text_lower]
         
-        return found[:5]  # Limit to 5 keywords
+        return found[:10]  # Limit to 10 keywords
     
     def generate_insights(self, article: Dict[str, Any]) -> Dict[str, str]:
         """
@@ -419,86 +434,13 @@ Categories:
         """
         Generate insights using rule-based approach.
         Used as fallback when AI is unavailable.
-        Extracts key entities from the article to provide semi-customized insights.
         """
-        text = f"{title} {summary}"
-        text_lower = text.lower()
-        
-        # Extract key entities for context-aware insights
-        location = self._extract_location_from_text(text)
-        company = self._extract_company_from_text(text)
-        
-        # Build context-aware prefix
-        context = ""
-        if location:
-            context = f"{location} 관련 "
-        elif company:
-            context = f"{company} 관련 "
-        
-        # Determine the main topic and generate specific insights
-        # Strike/Labor issues
-        if any(kw in text_lower for kw in ['strike', 'labor', '파업', '노동', '노조']):
-            return {
-                'trade': f"{context}파업 장기화 시 수출입 통관 지연 및 추가 비용 발생 예상",
-                'logistics': f"{context}대체 항만/터미널 확보 및 긴급 운송 루트 검토 필요",
-                'scm': f"{context}파업 기간 감안한 안전재고 확보 및 납기 재조정 권장",
-            }
-        
-        # Port/Congestion issues
-        elif any(kw in text_lower for kw in ['congestion', '혼잡', '체선', 'port', '항만', '항구']):
-            return {
-                'trade': f"{context}체선 비용 및 지연 손해 발생 가능, 계약 조건 점검 필요",
-                'logistics': f"{context}입출항 일정 재조정 및 대체 항만 활용 검토",
-                'scm': f"{context}리드타임 연장 감안한 발주 시점 앞당김 고려",
-            }
-        
-        # Freight rates/Cost
-        elif any(kw in text_lower for kw in ['rate', 'freight', '운임', '요금', 'cost', '비용']):
-            return {
-                'trade': f"{context}운임 변동분 반영한 수출입 원가 및 마진 재검토 필요",
-                'logistics': f"{context}장기 계약 또는 스팟 운임 비교 분석 후 최적안 선택",
-                'scm': f"{context}물류비 상승 대비 재고 정책 및 배송 빈도 최적화 검토",
-            }
-        
-        # Geopolitical/Crisis/Attack
-        elif any(kw in text_lower for kw in ['attack', 'war', 'crisis', '공격', '전쟁', '위기', '분쟁', 'houthi', '후티']):
-            return {
-                'trade': f"{context}해당 지역 경유 물동량 영향 및 우회 비용 산정 필요",
-                'logistics': f"{context}대체 항로(희망봉 등) 활용 시 리드타임 증가 대비",
-                'scm': f"{context}복수 소싱 및 지역 분산 전략으로 리스크 헷지 권장",
-            }
-        
-        # Delay/Disruption
-        elif any(kw in text_lower for kw in ['delay', 'disruption', '지연', '차질', '중단']):
-            return {
-                'trade': f"{context}납기 지연에 따른 고객 커뮤니케이션 및 페널티 검토",
-                'logistics': f"{context}긴급 배송(항공 전환 등) 옵션 비용 대비 효과 분석",
-                'scm': f"{context}버퍼 재고 확대 및 대체 공급처 활성화 검토",
-            }
-        
-        # Supply chain/Shortage
-        elif any(kw in text_lower for kw in ['supply chain', 'shortage', '공급망', '부족', '품귀']):
-            return {
-                'trade': f"{context}공급 불안정에 따른 수입선 다변화 검토 필요",
-                'logistics': f"{context}핵심 품목 우선 확보 및 물류 채널 다각화 추진",
-                'scm': f"{context}안전재고 수준 상향 및 대체 부품 승인 절차 가속화",
-            }
-        
-        # Canal/Route specific (Suez, Panama, etc.)
-        elif any(kw in text_lower for kw in ['suez', 'panama', 'canal', '수에즈', '파나마', '운하']):
-            return {
-                'trade': f"{context}운하 통과 지연/제한 시 운송 비용 상승 대비 필요",
-                'logistics': f"{context}우회 항로 전환 시 추가 소요 일수 및 비용 산정",
-                'scm': f"{context}장기화 대비 선제적 재고 확보 및 생산 일정 조정 권장",
-            }
-        
-        # Default - try to be somewhat relevant
-        else:
-            return {
-                'trade': f"{context}시장 동향 변화에 따른 수출입 전략 재검토 필요",
-                'logistics': f"{context}운영 효율화 및 비용 최적화 기회 탐색 권장",
-                'scm': f"{context}공급망 리스크 모니터링 강화 및 대응 체계 점검",
-            }
+        # Default simple insights when AI is not available
+        return {
+            'trade': '관련 시장 동향 모니터링 및 영향 분석 필요',
+            'logistics': '물류 일정 및 비용 영향 검토 필요',
+            'scm': '공급망 리스크 관리 점검 권장',
+        }
     
     def _extract_location_from_text(self, text: str) -> str:
         """Extract primary location/port from text"""

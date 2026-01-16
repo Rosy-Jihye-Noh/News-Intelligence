@@ -176,26 +176,101 @@ class DataManager:
     def _generate_headlines(self, articles: List[Dict[str, Any]], analyzer=None) -> List[Dict[str, Any]]:
         """
         Generate top headlines with insights.
-        Uses article grouping by similarity to find most covered topics.
+        Groups similar articles to find most covered topics.
         """
         if not articles:
             return []
         
-        logger.info("   📰 Generating headlines with insights...")
+        logger.info("   📰 Generating headlines with similarity grouping...")
         
-        # Simple approach: take top articles by recency and add insights
-        # In future, implement similarity-based grouping
-        top_articles = articles[:6]
+        # Group articles by similar titles (Jaccard similarity)
+        def get_title_words(title: str) -> set:
+            """Extract significant words from title"""
+            import re
+            # Remove special characters, split by space
+            words = re.sub(r'[^\w\s]', ' ', title.lower()).split()
+            # Filter out short words and common words
+            stop_words = {'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'is', 'are', 
+                         '이', '가', '을', '를', '의', '에', '에서', '로', '으로', '와', '과'}
+            return {w for w in words if len(w) > 2 and w not in stop_words}
+        
+        def jaccard_similarity(set1: set, set2: set) -> float:
+            """Calculate Jaccard similarity between two sets"""
+            if not set1 or not set2:
+                return 0.0
+            intersection = len(set1 & set2)
+            union = len(set1 | set2)
+            return intersection / union if union > 0 else 0.0
+        
+        # Group similar articles
+        article_groups = []  # List of (representative_article, group_count, articles_in_group)
+        used_indices = set()
+        
+        for i, article in enumerate(articles):
+            if i in used_indices:
+                continue
+            
+            title_words_i = get_title_words(article.get('title', ''))
+            group = [article]
+            used_indices.add(i)
+            
+            # Find similar articles
+            for j, other_article in enumerate(articles):
+                if j in used_indices:
+                    continue
+                
+                title_words_j = get_title_words(other_article.get('title', ''))
+                similarity = jaccard_similarity(title_words_i, title_words_j)
+                
+                if similarity >= 0.4:  # 40% similarity threshold
+                    group.append(other_article)
+                    used_indices.add(j)
+            
+            article_groups.append((article, len(group), group))
+        
+        # Sort groups by size (most covered topics first)
+        article_groups.sort(key=lambda x: x[1], reverse=True)
+        
+        # Step 3: Select headlines balancing KR/Global and coverage
+        kr_headlines = []
+        global_headlines = []
+        
+        for representative, group_count, group in article_groups:
+            news_type = representative.get('news_type', 'GLOBAL')
+            
+            if news_type == 'KR' and len(kr_headlines) < 3:
+                kr_headlines.append((representative, group_count))
+            elif news_type == 'GLOBAL' and len(global_headlines) < 3:
+                global_headlines.append((representative, group_count))
+            
+            if len(kr_headlines) >= 3 and len(global_headlines) >= 3:
+                break
+        
+        # Combine and sort by group count
+        selected = kr_headlines + global_headlines
+        selected.sort(key=lambda x: x[1], reverse=True)
+        
+        # If not enough, fill with remaining top groups
+        if len(selected) < 6:
+            for representative, group_count, group in article_groups:
+                if representative not in [s[0] for s in selected]:
+                    selected.append((representative, group_count))
+                    if len(selected) >= 6:
+                        break
+        
+        top_articles = [article for article, _ in selected[:6]]
+        
+        logger.info(f"   📊 Selected {len(top_articles)} headlines (max group size: {selected[0][1] if selected else 0})")
         
         headlines = []
-        for article in top_articles:
+        for article, group_count in selected[:6]:
             headline = {
                 'id': article['id'],
                 'title': article['title'],
                 'source_name': article['source_name'],
                 'url': article['url'],
                 'published_at_utc': article['published_at_utc'],
-                'group_count': 1,  # Placeholder for similarity grouping
+                'group_count': group_count,  # How many similar articles
                 'insights': {}
             }
             headlines.append(headline)
@@ -311,6 +386,14 @@ class DataManager:
             'news', 'article', 'report', 'update', 'breaking', 'said', 'according'
         }
         
+        # 조사/관사 블랙리스트 (불필요한 키워드 필터링)
+        PREPOSITIONS = {
+            'in', 'on', 'at', 'to', 'for', 'of', 'the', 'a', 'an',
+            'in the', 'to the', 'for the', 'of the', 'on the', 'at the',
+            'in 2024', 'in 2025', 'in 2026', 'first on', 'the post',
+            'port of', 'to', 'for', 'in'
+        }
+        
         keyword_counts = Counter()
         
         for article in articles:
@@ -325,36 +408,45 @@ class DataManager:
             summary = article.get('content_summary', '')
             text = f"{title} {summary}"
             
-            # 2-3단어 구문 추출 (bigram/trigram)
+            # 2-3단어 구문 추출 (bigram/trigram) - 조사/관사 제외
             words = text.split()
             for i in range(len(words) - 1):
                 # 2단어 구문
                 bigram = f"{words[i]} {words[i+1]}".lower().strip('.,!?;:()[]{}"\'-')
+                # 조사/관사가 포함된 경우 제외
+                if bigram in PREPOSITIONS:
+                    continue
                 # 일반 단어가 포함되지 않은 경우만 추가
                 if (bigram not in STOP_WORDS and 
+                    bigram not in PREPOSITIONS and
                     len(bigram.split()) == 2 and 
                     len(bigram) > 4 and
-                    not all(word in STOP_WORDS for word in bigram.split())):
+                    not all(word in STOP_WORDS or word in PREPOSITIONS for word in bigram.split())):
                     keyword_counts[bigram] += 1
             
             # 3단어 구문도 추출 (중요한 구문)
             for i in range(len(words) - 2):
                 trigram = f"{words[i]} {words[i+1]} {words[i+2]}".lower().strip('.,!?;:()[]{}"\'-')
+                # 조사/관사가 포함된 경우 제외
+                if any(phrase in trigram for phrase in PREPOSITIONS):
+                    continue
                 if (trigram not in STOP_WORDS and 
+                    trigram not in PREPOSITIONS and
                     len(trigram.split()) == 3 and
                     len(trigram) > 6 and
-                    not all(word in STOP_WORDS for word in trigram.split())):
+                    not all(word in STOP_WORDS or word in PREPOSITIONS for word in trigram.split())):
                     keyword_counts[trigram] += 1
             
-            # 기존 필터링된 키워드도 추가
+            # 기존 키워드 중 2단어 이상인 것만 추가
             for kw in filtered_keywords:
-                keyword_counts[kw] += 1
+                if len(kw.split()) >= 2:  # 2단어 이상만
+                    keyword_counts[kw] += 1
         
-        # Format for wordcloud
+        # Format for wordcloud (더 많은 키워드 추출)
         wordcloud_data = {
             'keywords': [
                 {'text': word, 'count': count, 'size': min(count * 10, 100)}
-                for word, count in keyword_counts.most_common(50)
+                for word, count in keyword_counts.most_common(100)  # 50 → 100
             ],
             'total_keywords': len(keyword_counts),
             'generated_at': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),

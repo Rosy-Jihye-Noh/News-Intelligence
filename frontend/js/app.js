@@ -1050,10 +1050,10 @@ function renderNewsList() {
                     <div class="news-tags">
                         ${(article.keywords || []).slice(0, 3).map(kw => 
                             `<span class="keyword-tag">${escapeHtml(kw)}</span>`
-                        ).join('')}
+                        ).join(' ')}
                         ${(article.country_tags || []).slice(0, 2).map(tag => 
                             `<span class="country-tag">${escapeHtml(tag)}</span>`
-                        ).join('')}
+                        ).join(' ')}
                     </div>
                 </div>
             </article>
