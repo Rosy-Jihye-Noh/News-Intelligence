@@ -11,7 +11,7 @@
 ## 주요 기능
 
 - **뉴스 수집**: RSS, Google News, Naver News, GDELT에서 자동 수집
-- **AI 분석**: Gemini 2.5 Flash를 활용한 카테고리 분류, 감성 분석, 키워드 추출
+- **AI 분석**: Gemini 2.0 Flash를 활용한 카테고리 분류, 감성 분석, 키워드 추출
 - **경제 지표**: 주가지수, 환율, 금리 (한국은행 ECOS API)
 - **자동화**: GitHub Actions로 평일 오전 9시(KST) 자동 실행
 - **알림**: Microsoft Teams 웹훅으로 일일 리포트 발송
@@ -114,14 +114,14 @@ News-Intelligence/
 
 ## 뉴스 카테고리
 
-| 카테고리 | 설명 |
-|---------|------|
-| Crisis | 파업, 항만 혼잡, 운하 차단 등 위기 상황 |
-| Ocean | 해운, 항만, 컨테이너 |
-| Air | 항공 화물, 공항 |
-| Inland | 육상 운송, 철도, 트럭 |
-| Economy | 경제, 금융, 환율 |
-| ETC | 기타 |
+| 카테고리 | 설명                                    |
+| -------- | --------------------------------------- |
+| Crisis   | 파업, 항만 혼잡, 운하 차단 등 위기 상황 |
+| Ocean    | 해운, 항만, 컨테이너                    |
+| Air      | 항공 화물, 공항                         |
+| Inland   | 육상 운송, 철도, 트럭                   |
+| Economy  | 경제, 금융, 환율                        |
+| ETC      | 기타                                    |
 
 ---
 
@@ -150,4 +150,3 @@ Repository Settings → Secrets에 환경 변수 추가:
 ## License
 
 This project is for internal use only.
-
