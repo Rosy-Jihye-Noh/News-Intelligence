@@ -1,29 +1,33 @@
 {
   "countries": [
     {
-      "code": "US",
-      "count": 37,
+      "code": "KR",
+      "count": 36,
       "risk_level": "high",
       "articles": [
         {
-          "title": "한은 \"美소비, 주가·고소득층 지출에 의존…충격 발생 시 경기 급락\"",
-          "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4393873"
+          "title": "인천해사고, 발전기금 명예의 전당 제막",
+          "url": "http://www.maritimepress.co.kr/news/articleView.html?idxno=329630"
         },
         {
-          "title": "트럼프 호감도, 5개월전보다 5%p↓…시진핑은 11%p↑[한국갤럽]",
-          "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4393872"
+          "title": "[반도체 현안점검] 트럼프 포고령 '예의주시'…90일 협상 시험대",
+          "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4393897"
         },
         {
-          "title": "TD코언 \"스트래티지, 목표가 낮추지만 '매수' 유지\"",
-          "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4393868"
+          "title": "[금통위 쇼크] 공사채도 후폭풍…오버 발행에 모집 취소까지",
+          "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4393893"
         }
       ]
     },
     {
-      "code": "KR",
-      "count": 26,
+      "code": "US",
+      "count": 30,
       "risk_level": "high",
       "articles": [
+        {
+          "title": "[반도체 현안점검] 트럼프 포고령 '예의주시'…90일 협상 시험대",
+          "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4393897"
+        },
         {
           "title": "한은 \"美소비, 주가·고소득층 지출에 의존…충격 발생 시 경기 급락\"",
           "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4393873"
@@ -31,35 +35,31 @@
         {
           "title": "트럼프 호감도, 5개월전보다 5%p↓…시진핑은 11%p↑[한국갤럽]",
           "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4393872"
-        },
-        {
-          "title": "고환율에 한미일 공동대응, 과거와 달라진 여건은",
-          "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4393864"
         }
       ]
     },
     {
       "code": "IR",
-      "count": 26,
+      "count": 24,
       "risk_level": "high",
       "articles": [
         {
-          "title": "[오늘 외환딜러 환율 예상레인지]",
-          "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4393835"
-        },
-        {
-          "title": "안보리서 맞선 미국-이란…\"모든 선택지 고려\" VS \"공격시 상응 조치\"",
-          "url": "https://www.mt.co.kr/world/2026/01/16/2026011610103453879"
-        },
-        {
           "title": "“미국에 좌지우지” 국제유가 美 이란 군사개입 우려 완화에 급락",
           "url": "https://n.news.naver.com/mnews/article/050/0000101097?sid=101"
+        },
+        {
+          "title": "Oil Holds Biggest Drop Since June as Iran Concerns Subside",
+          "url": "https://www.bloomberg.com/news/articles/2026-01-15/latest-oil-market-news-and-analysis-for-jan-16"
+        },
+        {
+          "title": "Oil falls more than 4% as traders see Trump backing away from Iran strike threats",
+          "url": "https://www.cnbc.com/2026/01/15/oil-prices-sink-more-than-2percent-as-trump-remarks-calm-concern-about-iran.html"
         }
       ]
     },
     {
       "code": "CN",
-      "count": 24,
+      "count": 23,
       "risk_level": "high",
       "articles": [
         {
@@ -67,18 +67,37 @@
           "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4393872"
         },
         {
-          "title": "팩트로 시장을 설득하다…고려아연의 위기 커뮤니케이션 전략",
-          "url": "https://www.the-pr.co.kr/news/articleView.html?idxno=60187"
+          "title": "\"기안84도 이런 날엔 '러닝' 멈춰야\"…전국 덮친 미세먼지, 의사의 경고",
+          "url": "https://www.mt.co.kr/thebio/2026/01/16/2026011613300628355"
         },
         {
-          "title": "Metals Decline as China Clamps Down on High-Frequency Trading",
-          "url": "https://www.bloomberg.com/news/articles/2026-01-16/metals-decline-as-china-clamps-down-on-high-frequency-trading"
+          "title": "올해 글로벌 자동차 시장 0.2% 성장… 미·중 둔화에 '제로 성장' 위기",
+          "url": "https://n.news.naver.com/mnews/article/417/0001124950?sid=103"
+        }
+      ]
+    },
+    {
+      "code": "IN",
+      "count": 16,
+      "risk_level": "high",
+      "articles": [
+        {
+          "title": "서대문역 인도로 버스 돌진해 '13명 부상'…브레이크 고장 추정",
+          "url": "https://www.mt.co.kr/society/2026/01/16/2026011614463954039"
+        },
+        {
+          "title": "해운협회 ‘국가전략상선대’ 추진",
+          "url": "https://www.naeil.com/news/read/574719?ref=naver"
+        },
+        {
+          "title": "India’s exports to China surge in December while shipments to U.S. decline as Trump tariffs bite",
+          "url": "https://www.cnbc.com/2026/01/16/india-trade-us-china-exports-trump-tariffs.html"
         }
       ]
     },
     {
       "code": "RU",
-      "count": 16,
+      "count": 14,
       "risk_level": "high",
       "articles": [
         {
@@ -90,33 +109,14 @@
           "url": "https://n.news.naver.com/mnews/article/056/0012106481?sid=104"
         },
         {
-          "title": "절대반지의 유혹: 하이에크가 2026년의 ‘절대 권력’에게 묻다 [조원경...",
-          "url": "https://n.news.naver.com/mnews/article/016/0002586806?sid=101"
-        }
-      ]
-    },
-    {
-      "code": "IN",
-      "count": 13,
-      "risk_level": "high",
-      "articles": [
-        {
-          "title": "문소리 WFP 친선대사, 케냐 방문 후기…\"계속 함께하고파\"",
-          "url": "https://m.entertain.naver.com/article/311/0001964378"
-        },
-        {
-          "title": "문소리 WFP 친선대사, 케냐 방문 후기 \"제로 헝거가 올 때까지 함께하고...",
-          "url": "https://m.entertain.naver.com/article/416/0000320333"
-        },
-        {
-          "title": "‘WFP 친선대사’ 문소리, 케냐 방문 후기 공개",
-          "url": "https://m.entertain.naver.com/article/144/0001092076"
+          "title": "Seafarer Injured in Russian Strike on Port of Chernomorsk",
+          "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQa1FpUnJyT0RXV0FCNVlCeDNqVUwtVzRsTVNwRUxhV2pjLTd2UTVkaFp0emkweGoyN3E3S1RpTnF0anNHamFFTkNLb296b05YOEc3cno2Y1ZuMFJBVnlheWhzbUl6TDV6N1YtRzFiTDllMU44ZzU5RHowTzBQWEpTSEpibl9UQ0VjUG4zUVZ0OWYyQ0xwellVdDZNcUQ?oc=5"
         }
       ]
     },
     {
       "code": "GB",
-      "count": 8,
+      "count": 7,
       "risk_level": "high",
       "articles": [
         {
@@ -128,8 +128,8 @@
           "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxONGhSbllXRllob1pPNDh6TE8tUDFTa2ZFMm9HbXRFeWRsMWxaT3EtcG5aMEZYaENtQVBwbmhVZ0hOYmJqdGwtSHMycGNLMVZKb3FaVVl5anpjYk41MXVMQ1lWRUdjMjVhbmxROV8yd3lyZ09FWGczSWx3X3lPeVJ6Q0hMeVgyeWU3QmNWbWNkSkNiZG51OW54MnN1Vm8xYzg4a2lMVHluVnFZVTlPM0pubUdPbWxIQ204Tm9SddIBwgFBVV95cUxPdkpwbDFvSmlySHNmOGxrWFlGWElUdHBpV0xkejBwS2pGcVNHX3lvSmJEUkdma1BsQmxSRVlkaFZ5ejVCWVAza0R1RlRhX1JuS093SHdoWG5YQmVLRHpfY1djeG9YaUZjckdsaE81cmhxSElzREZJWnBnaUNiYnZjRlpraTZrQmh5ZE41eWFRc2VJRDBTWlRta3pGbEFab1VoYkpUODNRMklPTHRjcE5nQUtiQTFDcDBlMXVSLTBaZWVjQQ?oc=5"
         },
         {
-          "title": "State-level asymmetric warfare generates higher maritime risk",
-          "url": "https://container-news.com/state-level-asymmetric-warfare-generates-higher-maritime-risk/"
+          "title": "Kukdong MES eyes global container leasing business as prices slump",
+          "url": "https://theloadstar.com/kukdong-mes-eyes-global-container-leasing-business-as-prices-slump/"
         }
       ]
     },
@@ -147,35 +147,20 @@
           "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4393864"
         },
         {
-          "title": "[오늘 외환딜러 환율 예상레인지]",
-          "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4393835"
-        }
-      ]
-    },
-    {
-      "code": "UA",
-      "count": 4,
-      "risk_level": "medium",
-      "articles": [
-        {
-          "title": "한-NATO 정책협의회 개최…\"가치 공유 우방국 간 협력 중요\"",
-          "url": "https://www.mt.co.kr/politics/2026/01/16/2026011610160184312"
-        },
-        {
-          "title": "5년새 두배 급증 중러 무역액, 지난해 급감 이유는?",
-          "url": "https://www.newspim.com/news/view/20260116000320"
-        },
-        {
-          "title": "The Silent Profit Killer in Transportation & Logistics",
-          "url": "https://www.freightwaves.com/news/the-silent-profit-killer-in-transportation-logistics"
+          "title": "Japan and Italy to Elevate Ties, Cooperate on Critical Minerals",
+          "url": "https://www.bloomberg.com/news/articles/2026-01-16/japan-and-italy-to-elevate-ties-cooperate-on-critical-minerals"
         }
       ]
     },
     {
       "code": "TW",
-      "count": 3,
-      "risk_level": "medium",
+      "count": 5,
+      "risk_level": "high",
       "articles": [
+        {
+          "title": "[반도체 현안점검] 트럼프 포고령 '예의주시'…90일 협상 시험대",
+          "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4393897"
+        },
         {
           "title": "美·대만 무역협정이 반도체 공급망과 동북아 안보에 미칠 영향은",
           "url": "https://www.newspim.com/news/view/20260116000405"
@@ -183,10 +168,6 @@
         {
           "title": "US to cut tariffs on Taiwanese goods after investment pledge",
           "url": "https://www.bbc.com/news/articles/c3dmpr37yxlo?at_medium=RSS&at_campaign=rss"
-        },
-        {
-          "title": "Taiwan greatest geopolitical risk to markets – UBP outlook",
-          "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOOG5zNXVGd29HdnVsdEJJc25XWUlmZ0cySEV2Nnk2dm1pZUZtZmFsQkJmdDZIVlBjRWd5eVFPX0pKSHF4RzAyMWVULS1KYmdiaDVKVWhwTnRJNy1hcDJSc1M0UjZrRDZzN1ljY3VFa3dIZERTOHJQWUhfNGZMamludENMZk9BYmt0VWc?oc=5"
         }
       ]
     },
@@ -225,17 +206,17 @@
       ]
     },
     {
-      "code": "YE",
+      "code": "UA",
       "count": 2,
       "risk_level": "medium",
       "articles": [
         {
-          "title": "Is the Yemeni government getting ready to attack the Houthis?",
-          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQSElsdEltNF94NExRSHJ2Y2JUN05HT1hVSkRBQlNfQ3E5aWNuSTlLTjRMeWdRRHhPLUpxbFhDZlRNUG9oX0xaQlBJMi02ZFN6TENsemU2djlieFR0Z2xaTks4VEdyVHlZUHBJZHRTX3dJQXBfUWhjeExjYjBvSjh2WEl0cHRPN1NiREpsMTJISkJLR1VyUmVrYXo4c01tZ9IBowFBVV95cUxQczBJbDVERGpZbUl2Xy1OZWNJcU8zYXE4RHhxZUJMUTRlYXdDR1pRX0NpX3RXTFhsYU9tbVNIaldMZDBJdkh3NDc5SUdOWEx6TU5uanMtQTRqYnIzekxaZ0k5UjJ6WFBYWWNRT2JJdUs2MWZWU2QtcDl0R2RhWUY1NTlTQnNQclcwa3BZdjZiUDlxSGRqb01lVGZ6Y2Z5a2lYejhR?oc=5"
+          "title": "The Silent Profit Killer in Transportation & Logistics",
+          "url": "https://www.freightwaves.com/news/the-silent-profit-killer-in-transportation-logistics"
         },
         {
-          "title": "中왕이 소말리아 방문취소에 해석 분분…'안전위험 우려' 관측도",
-          "url": "https://n.news.naver.com/mnews/article/001/0015844224?sid=104"
+          "title": "트럼프, 이란에 “도움 가고 있다”... 중동에 美 항모 없는데 어떻게?",
+          "url": "https://n.news.naver.com/mnews/article/023/0003952941?sid=104"
         }
       ]
     },
@@ -260,8 +241,19 @@
           "url": "https://www.hellenicshippingnews.com/singapores-lsfo-arbitrage-arrivals-from-west-look-to-rebound-in-jan-from-dec/"
         }
       ]
+    },
+    {
+      "code": "YE",
+      "count": 1,
+      "risk_level": "low",
+      "articles": [
+        {
+          "title": "Is the Yemeni government getting ready to attack the Houthis?",
+          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQSElsdEltNF94NExRSHJ2Y2JUN05HT1hVSkRBQlNfQ3E5aWNuSTlLTjRMeWdRRHhPLUpxbFhDZlRNUG9oX0xaQlBJMi02ZFN6TENsemU2djlieFR0Z2xaTks4VEdyVHlZUHBJZHRTX3dJQXBfUWhjeExjYjBvSjh2WEl0cHRPN1NiREpsMTJISkJLR1VyUmVrYXo4c01tZ9IBowFBVV95cUxQczBJbDVERGpZbUl2Xy1OZWNJcU8zYXE4RHhxZUJMUTRlYXdDR1pRX0NpX3RXTFhsYU9tbVNIaldMZDBJdkh3NDc5SUdOWEx6TU5uanMtQTRqYnIzekxaZ0k5UjJ6WFBYWWNRT2JJdUs2MWZWU2QtcDl0R2RhWUY1NTlTQnNQclcwa3BZdjZiUDlxSGRqb01lVGZ6Y2Z5a2lYejhR?oc=5"
+        }
+      ]
     }
   ],
   "total_crisis_countries": 15,
-  "generated_at": "2026-01-16T03:33:39Z"
+  "generated_at": "2026-01-16T06:35:59Z"
 }
