@@ -267,12 +267,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 280px;
+            min-height: 380px;
         }
         
         #wordcloud-canvas {
             width: 100%;
-            height: 280px;
+            height: 380px;
             transform: scaleX(0.92);  /* 장평 조정 - 글자 가로 폭 줄이기 */
             transform-origin: center center;
         }
@@ -287,7 +287,7 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            max-height: 200px;
+            max-height: 380px;
             overflow-y: auto;
             flex-shrink: 0;
         }
@@ -1151,12 +1151,6 @@
                 <h3 class="section-title">📰 Top Headlines</h3>
                 <div class="headlines-list" id="headlines-list">
                     <div class="loading">Loading headlines</div>
-                </div>
-                <!-- 시사점 표시 영역 (헤드라인 섹션 하단 고정) -->
-                <div class="insights-panel" id="insights-panel">
-                    <div class="insights-placeholder">
-                        <span>💡</span> 헤드라인에 마우스를 올리면 시사점이 표시됩니다
-                    </div>
                 </div>
             </div>
         </div>

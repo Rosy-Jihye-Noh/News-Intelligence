@@ -747,7 +747,7 @@ function renderWordcloud() {
     
     // Set canvas size (높이 증가로 더 많은 키워드 표시)
     canvas.width = canvas.parentElement.offsetWidth || 400;
-    canvas.height = 320;
+    canvas.height = 380;
     
     // Clear canvas
     const ctx = canvas.getContext('2d');
@@ -798,15 +798,6 @@ function renderHeadlines() {
             </a>
         `;
     }).join('');
-    
-    // [주석처리] 시사점 패널 - 기능 비활성화
-    // setupHeadlineHoverEvents();
-    
-    // 시사점 패널 숨기기
-    const insightsPanel = document.getElementById('insights-panel');
-    if (insightsPanel) {
-        insightsPanel.style.display = 'none';
-    }
 }
 
 /**
