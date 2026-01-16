@@ -778,7 +778,6 @@ function renderWordcloud() {
  */
 function renderHeadlines() {
     const container = document.getElementById('headlines-list');
-    const insightsPanel = document.getElementById('insights-panel');
     if (!container) return;
     
     // Use headlines from headlines_data.json, fallback to top articles
