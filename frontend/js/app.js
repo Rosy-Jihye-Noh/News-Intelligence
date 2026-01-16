@@ -725,6 +725,39 @@ function formatChartDate(dateStr, period) {
 }
 
 /**
+ * Ship shape function for WordCloud2
+ * Returns a value between 0 and 1 based on theta (angle)
+ */
+function shipShape(theta) {
+    // Normalize theta to 0-2π
+    const t = theta % (2 * Math.PI);
+    
+    // Ship hull shape (simplified cargo ship silhouette)
+    // Using polar coordinates to create ship-like shape
+    const cos = Math.cos(t);
+    const sin = Math.sin(t);
+    
+    // Ship body - elongated horizontal shape with flat bottom
+    // Hull (main body) - wide and flat
+    if (sin >= 0) {
+        // Top half - deck and bridge
+        if (cos > 0.3) {
+            // Front (bow) - tapered
+            return 0.4 + cos * 0.5;
+        } else if (cos < -0.5) {
+            // Back (stern) - slightly tapered
+            return 0.5 + cos * 0.3;
+        } else {
+            // Middle deck - flat with bridge bump
+            return 0.7 + Math.abs(cos) * 0.2 + (cos > -0.2 && cos < 0.1 ? 0.15 : 0);
+        }
+    } else {
+        // Bottom half - hull (relatively flat)
+        return 0.6 + Math.abs(cos) * 0.3;
+    }
+}
+
+/**
  * Render WordCloud
  */
 function renderWordcloud() {
@@ -754,7 +787,7 @@ function renderWordcloud() {
     ctx.fillStyle = '#16161f';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Render wordcloud
+    // Render wordcloud with ship shape
     WordCloud(canvas, {
         list: wordList,
         gridSize: 4,  // 더 촘촘하게
@@ -765,9 +798,9 @@ function renderWordcloud() {
             return colors[Math.floor(Math.random() * colors.length)];
         },
         backgroundColor: '#16161f',
-        rotateRatio: 0.15,  // 회전 최소화 (긴 단어 가독성)
-        shape: 'circle',
-        ellipticity: 0.65,
+        rotateRatio: 0.1,  // 회전 최소화 (긴 단어 가독성)
+        shape: shipShape,  // 배 모양
+        ellipticity: 0.4,  // 가로로 넓게
         drawOutOfBound: false,  // 캔버스 밖으로 나가지 않도록
         shrinkToFit: true,  // 공간에 맞게 축소
     });
@@ -1240,26 +1273,28 @@ function formatTime(dateStr) {
     try {
         const date = new Date(dateStr);
         const now = new Date();
-        const diff = now - date;
+        const diffMs = now - date;
+        
+        // 음수 처리 (미래 시간)
+        if (diffMs < 0) {
+            return '방금 전';
+        }
+        
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
         
         // 60분 이하: X분 전
-        if (diff < 3600000) {
-            const mins = Math.floor(diff / 60000);
-            return `${mins}분 전`;
+        if (diffMins <= 60) {
+            return `${diffMins}분 전`;
         } 
-        // 60분 초과 ~ 24시간: X시간 Y분 전
-        else if (diff < 86400000) {
-            const hours = Math.floor(diff / 3600000);
-            const mins = Math.floor((diff % 3600000) / 60000);
-            if (mins > 0) {
-                return `${hours}시간 ${mins}분 전`;
-            }
-            return `${hours}시간 전`;
+        // 24시간 이하: X시간 전
+        else if (diffHours <= 24) {
+            return `${diffHours}시간 전`;
         } 
-        // 24시간 초과 ~ 7일: X일 전
-        else if (diff < 604800000) {
-            const days = Math.floor(diff / 86400000);
-            return `${days}일 전`;
+        // 7일 이하: X일 전
+        else if (diffDays <= 7) {
+            return `${diffDays}일 전`;
         } 
         // 7일 초과: 절대 시간
         else {
